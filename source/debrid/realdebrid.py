@@ -20,8 +20,8 @@ class RealDebrid(BaseDebrid):
         self.base_url = "https://api.real-debrid.com"
         self.headers = {"Authorization": f"Bearer {self.config['debridKey']}"}
 
-    def get_transcode_link(self, torrent_id):
-        url = f"{self.base_url}/rest/1.0/streaming/transcode/{torrent_id}"
+    def get_transcode_link(self, id_stream):
+        url = f"{self.base_url}/rest/1.0/streaming/transcode/{id_stream}"
 
         response = self.get_json_response(url, headers=self.headers)
         data = response.json()
