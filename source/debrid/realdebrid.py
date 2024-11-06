@@ -20,6 +20,22 @@ class RealDebrid(BaseDebrid):
         self.base_url = "https://api.real-debrid.com"
         self.headers = {"Authorization": f"Bearer {self.config['debridKey']}"}
 
+    def get_transcode_link(self, torrent_id):
+        url = f"{self.base_url}/rest/1.0/streaming/transcode/{torrent_id}"
+
+        response = self.get_json_response(url, headers=self.headers)
+        data = response.json()
+        dash_data = data.get("dash")
+
+        if isinstance(dash_data, dict) and "full" in dash_data:
+            full_dash_link = dash_data["full"]  # Get the 'full' DASH MPD link
+            logger.info(f"DASH MPD full link: {full_dash_link}")
+            return full_dash_link
+        else:
+            logger.error("DASH MPD 'full' link is unavailable in the response.")
+            return "Error: DASH MPD 'full' link unavailable."
+
+
     def add_magnet(self, magnet, ip=None):
         url = f"{self.base_url}/rest/1.0/torrents/addMagnet"
         data = {"magnet": magnet}
@@ -142,7 +158,8 @@ class RealDebrid(BaseDebrid):
             return "Error: Failed to unrestrict link."
 
         logger.info(f"Got download link: {unrestrict_response['download']}")
-        return unrestrict_response['download']
+        unrestrict_response_stream = self.get_transcode_link(torrent_id)
+        return unrestrict_response_stream
 
     def __get_cached_torrent_ids(self, info_hash):
         url = f"{self.base_url}/rest/1.0/torrents"
