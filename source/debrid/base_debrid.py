@@ -31,7 +31,7 @@ class BaseDebrid:
                 self.logger.error(f"Failed to parse response as JSON: {response.text}")
                 return None
         else:
-            self.logger.error(f"Request failed with status code {response.status_code}")
+            self.logger.error(f"Request failed with status code {response.status_code} {url}")
             return None
 
     def wait_for_ready_status(self, check_status_func, timeout=30, interval=5):
