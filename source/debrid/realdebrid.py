@@ -158,7 +158,7 @@ class RealDebrid(BaseDebrid):
             return "Error: Failed to unrestrict link."
 
         logger.info(f"Got download link: {unrestrict_response['download']}")
-        unrestrict_response_stream = self.get_transcode_link(torrent_id)
+        unrestrict_response_stream = self.get_transcode_link(unrestrict_response['id'])
         return unrestrict_response_stream
 
     def __get_cached_torrent_ids(self, info_hash):
