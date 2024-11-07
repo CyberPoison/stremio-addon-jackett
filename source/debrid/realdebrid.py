@@ -27,7 +27,7 @@ class RealDebrid(BaseDebrid):
         dash_data = response
 
         if "dash" in dash_data:
-            full_dash_link = dash_data["dash"]["full"]  # Get the 'full' DASH MPD link
+            full_dash_link = dash_data["dash"]["full"].replace("eng1", "fre1")  # Get the 'full' DASH MPD link
             logger.info(f"DASH MPD full link: {full_dash_link}")
             return full_dash_link
         else:
