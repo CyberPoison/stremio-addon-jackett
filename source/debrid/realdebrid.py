@@ -24,11 +24,10 @@ class RealDebrid(BaseDebrid):
         url = f"{self.base_url}/rest/1.0/streaming/transcode/{id_stream}"
 
         response = self.get_json_response(url, headers=self.headers)
-        data = response.json()
-        dash_data = data.get("dash")
+        dash_data = response
 
-        if isinstance(dash_data, dict) and "full" in dash_data:
-            full_dash_link = dash_data["full"]  # Get the 'full' DASH MPD link
+        if "dash" in dash_data:
+            full_dash_link = dash_data["dash"]["full"]  # Get the 'full' DASH MPD link
             logger.info(f"DASH MPD full link: {full_dash_link}")
             return full_dash_link
         else:
